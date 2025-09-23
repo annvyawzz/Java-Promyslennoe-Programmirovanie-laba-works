@@ -13,7 +13,7 @@ public class laba3
         System.out.println("Введите текст (пустая строка - конец ввода):");
 
         try {
-            // Создаем объект класса MyString и читаем текст
+            //объект класса MyString
             MyString myString = new MyString();
             String text = myString.readText(br);
 
@@ -153,7 +153,7 @@ class MyStringBuffer
         int pos = 0;
 
         while (pos < buffer.length()) {
-            // Пропускаем не-буквы
+            // пропуск не-букв
             while (pos < buffer.length() && !Character.isLetter(buffer.charAt(pos))) {
                 result.append(buffer.charAt(pos));
                 pos++;
@@ -205,7 +205,7 @@ class MyStringTokenizer
     public String replaceWords(int targetLength, String replacement) {
         StringBuffer result = new StringBuffer();
 
-        // Разбиваем на строки -  java.util.StringTokenizer
+        // разбиваем на строки -  java.util.StringTokenizer
         StringTokenizer lineTokenizer = new StringTokenizer(text, "\n", true);
 
         while (lineTokenizer.hasMoreTokens()) {
@@ -223,7 +223,6 @@ class MyStringTokenizer
     }
 
     private void processLine(StringBuffer result, String line, int targetLength, String replacement) {
-        // Используем java.util.StringTokenizer
         StringTokenizer wordTokenizer = new StringTokenizer(line, " \t,.:;!?()-", true);
 
         while (wordTokenizer.hasMoreTokens()) {
@@ -264,4 +263,5 @@ class MyStringTokenizer
         }
         return count;
     }
+
 }
