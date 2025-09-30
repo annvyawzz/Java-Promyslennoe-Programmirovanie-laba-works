@@ -1,6 +1,11 @@
 //4.В тексте слова заданной длины заменить указанной подстрокой,
 // длина которой может не совпадать с длиной слова.
 
+/*Текст для пробы : Великолепное утро начиналось с яркого солнца, которое медленно поднималось над горизонтом.
+ Птицы весело пели свои песни, приветствуя новый день.
+ Старые дубы, стоявший на краю леса, казались особенно величественным в этих лучах.
+*/
+
 import java.io.*;
 import java.util.StringTokenizer;
 
@@ -12,11 +17,13 @@ public class laba3
         BufferedReader br = new BufferedReader(isr);
         System.out.println("Введите текст (пустая строка - конец ввода):");
 
-        try {
+        try
+        {
             MyString myString = new MyString();
             String text = myString.readText(br);
 
-            if (text.isEmpty()) {
+            if (text.isEmpty())
+            {
                 System.out.println("Текст не был введен");
                 return;
             }
