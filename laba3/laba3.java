@@ -13,12 +13,11 @@ public class laba3
         System.out.println("Введите текст (пустая строка - конец ввода):");
 
         try {
-            //объект класса MyString
             MyString myString = new MyString();
             String text = myString.readText(br);
 
             if (text.isEmpty()) {
-                System.out.println("Текст не был введен.");
+                System.out.println("Текст не был введен");
                 return;
             }
 
@@ -32,17 +31,10 @@ public class laba3
             System.out.println("\nРезультат обработки MyString:");
             System.out.println(stringResult);
 
-            MyStringBuffer myBuffer = new MyStringBuffer(text);
-            String bufferResult = myBuffer.replaceWords(targetLength, replacement);
-            System.out.println("\nРезультат обработки MyStringBuffer:");
-            System.out.println(bufferResult);
 
-            MyStringTokenizer myTokenizer = new MyStringTokenizer(text);
-            String tokenResult = myTokenizer.replaceWords(targetLength, replacement);
-            System.out.println("\nРезультат обработки MyStringTokenizer:");
-            System.out.println(tokenResult);
-
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.out.println("Ошибка чтения с клавиатуры");
         }
     }
@@ -132,136 +124,3 @@ class MyString
     }
 }
 
-class MyStringBuffer
-{
-    private StringBuffer buffer;
-
-    public MyStringBuffer() {
-        buffer = new StringBuffer();
-    }
-
-    public MyStringBuffer(String initialText) {
-        buffer = new StringBuffer(initialText);
-    }
-
-    public MyStringBuffer(StringBuffer initialBuffer) {
-        buffer = new StringBuffer(initialBuffer);
-    }
-
-    public String replaceWords(int targetLength, String replacement) {
-        StringBuffer result = new StringBuffer();
-        int pos = 0;
-
-        while (pos < buffer.length()) {
-            // пропуск не-букв
-            while (pos < buffer.length() && !Character.isLetter(buffer.charAt(pos))) {
-                result.append(buffer.charAt(pos));
-                pos++;
-            }
-
-            if (pos >= buffer.length()) break;
-
-            int wordStart = pos;
-            while (pos < buffer.length() && Character.isLetter(buffer.charAt(pos))) {
-                pos++;
-            }
-
-            String word = buffer.substring(wordStart, pos);
-            if (word.length() == targetLength) {
-                result.append(replacement);
-            } else {
-                result.append(word);
-            }
-        }
-
-        return result.toString();
-    }
-
-    public void appendText(String text) {
-        buffer.append(text);
-    }
-
-    public int getCapacity() {
-        return buffer.capacity();
-    }
-
-    public int getLength() {
-        return buffer.length();
-    }
-}
-
-class MyStringTokenizer
-{
-    private String text;
-
-    public MyStringTokenizer() {
-        text = "";
-    }
-
-    public MyStringTokenizer(String initialText) {
-        text = initialText;
-    }
-
-    public String replaceWords(int targetLength, String replacement) {
-        StringBuffer result = new StringBuffer();
-
-        // разбиваем на строки -  java.util.StringTokenizer
-        StringTokenizer lineTokenizer = new StringTokenizer(text, "\n", true);
-
-        while (lineTokenizer.hasMoreTokens()) {
-            String token = lineTokenizer.nextToken();
-
-            if (token.equals("\n")) {
-                result.append(token);
-                continue;
-            }
-
-            processLine(result, token, targetLength, replacement);
-        }
-
-        return result.toString();
-    }
-
-    private void processLine(StringBuffer result, String line, int targetLength, String replacement) {
-        StringTokenizer wordTokenizer = new StringTokenizer(line, " \t,.:;!?()-", true);
-
-        while (wordTokenizer.hasMoreTokens()) {
-            String token = wordTokenizer.nextToken();
-
-            if (isWord(token)) {
-                if (token.length() == targetLength) {
-                    result.append(replacement);
-                } else {
-                    result.append(token);
-                }
-            } else {
-                result.append(token);
-            }
-        }
-    }
-
-    private boolean isWord(String str) {
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isLetter(str.charAt(i))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public int countWords() {
-        int count = 0;
-        StringTokenizer tokenizer = new StringTokenizer(text, " \t\n\r,.:;!?()-");
-        while (tokenizer.hasMoreTokens()) {
-            tokenizer.nextToken();
-            count++;
-        }
-        return count;
-    }
-
-}
