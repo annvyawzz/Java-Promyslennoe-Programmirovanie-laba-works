@@ -50,7 +50,7 @@ public class laba4
                 }
             }
 
-            // Разделение на отличников и всех
+            //разделение на отличников и всех
             for (RecordBook student : allStudents) {
                 if (student.isExcellentStudent()) {
                     excellentStudents.add(student);
@@ -91,7 +91,7 @@ public class laba4
                 }
             };
 
-            // 1. ВЫВОД ОТЛИЧНИКОВ
+            // ВЫВОД ОТЛИЧНИКОВ
             writer.println("СТУДЕНТЫ-ОТЛИЧНИКИ");
             writer.println("==================");
             writer.println();
@@ -100,7 +100,7 @@ public class laba4
                 writer.println("Всего отличников: " + excellentStudents.size());
                 writer.println();
 
-                // Отличники сортируются по среднему баллу
+                //отличники по сред баллу
                 Collections.sort(excellentStudents, byAverageGrade);
                 for (RecordBook student : excellentStudents)
                 {
@@ -339,4 +339,5 @@ class RecordBook
         }
     }
 }
+
 
