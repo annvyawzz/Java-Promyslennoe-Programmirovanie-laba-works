@@ -1,9 +1,9 @@
-//4.В тексте слова заданной длины заменить указанной подстрокой,
+//18.В тексте найти первую подстроку максимальной длины, не содержащую букв. добавь это туда //4.В тексте слова заданной длины заменить указанной подстрокой,
 // длина которой может не совпадать с длиной слова.
 
-/*Текст для пробы : Великолепное утро начиналось с яркого солнца, которое медленно поднималось над горизонтом.
- Птицы весело пели свои песни, приветствуя новый день.
- Старые дубы, стоявший на краю леса, казались особенно величественным в этих лучах.
+/*Великолепное утро начиналось с яркого солнца, которое медленно поднималось над горизонтом.
+ Птицы весело 467 пели свои песни 777 , приветствуя новый день.
+ Старые дубы, стоявший на 404  краю леса, казались особенно 3123 величественным 45 в этих лучах.
 */
 
 import java.io.*;
@@ -28,21 +28,26 @@ public class laba3
                 return;
             }
 
-            System.out.print(" длинa слов для замены: ");
+            // Поиск первой подстроки максимальной длины без букв
+            String maxNonLetterSubstring = myString.findMaxNonLetterSubstring(text);
+            System.out.println("Первая подстрока максимальной длины без букв: \"" + maxNonLetterSubstring + "\"");
+            System.out.println("Длина: " + maxNonLetterSubstring.length());
+
+            System.out.print("длинa слов для замены: ");
             int targetLength = Integer.parseInt(br.readLine());
 
             System.out.print("подстрокa для замены: ");
             String replacement = br.readLine();
 
             String stringResult = myString.replaceWords(text, targetLength, replacement);
-            System.out.println("\nРезультат обработки MyString:");
+            System.out.println("\nРезультат обработки: ");
             System.out.println(stringResult);
 
 
         }
         catch (IOException e)
         {
-            System.out.println("Ошибка чтения с клавиатуры");
+            System.out.println("Ошибка");
         }
     }
 }
@@ -57,7 +62,8 @@ class MyString
     }
 
 
-    public String readText(BufferedReader br) throws IOException {
+    public String readText(BufferedReader br) throws IOException
+    {
         String result = "";
         while (true) {
             String line = br.readLine();
@@ -66,7 +72,8 @@ class MyString
                 break;
             }
 
-            if (result.length() == 0) {
+            if (result.length() == 0)
+            {
                 result = result.concat(line);
             } else {
                 result = result.concat("\n").concat(line);
@@ -75,11 +82,43 @@ class MyString
         return result;
     }
 
-    public String replaceWords(String text, int targetLength, String replacement) {
+    //метод для поиска первой подстроки максимальной длины без букв и пробелов
+    public String findMaxNonLetterSubstring(String text)
+    {
+        String maxSubstring = "";
+        String currentSubstring = "";
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            // Если символ не буква и не пробел, добавляем к текущей подстроке
+            if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
+                currentSubstring += c;
+            } else {
+                // Если встретили букву или пробел, проверяем текущую подстроку
+                if (currentSubstring.length() > maxSubstring.length()) {
+                    maxSubstring = currentSubstring;
+                }
+                currentSubstring = ""; // Сбрасываем текущую подстроку
+            }
+        }
+
+        // Проверяем подстроку в конце текста
+        if (currentSubstring.length() > maxSubstring.length()) {
+            maxSubstring = currentSubstring;
+        }
+
+        return maxSubstring.isEmpty() ? "" : maxSubstring;
+    }
+
+
+    public String replaceWords(String text, int targetLength, String replacement)
+    {
         String result = "";
         int startPos = 0;
 
-        while (startPos < text.length()) {
+        while (startPos < text.length())
+        {
             int endPos = text.indexOf('\n', startPos);
             if (endPos == -1) {
                 endPos = text.length();
@@ -101,7 +140,8 @@ class MyString
         return result;
     }
 
-    private String processLine(String line, int targetLength, String replacement) {
+    private String processLine(String line, int targetLength, String replacement)
+    {
         String result = "";
         int pos = 0;
 
@@ -130,4 +170,3 @@ class MyString
         return result;
     }
 }
-
