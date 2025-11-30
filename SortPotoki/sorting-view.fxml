@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.psyche.potokisort.SortingController">
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2E7D32;"
+           text="Сравнение алгоритмов сортировки" />
+
+    <Label text="Введите массив целых чисел (5-20 чисел для лучшей визуализации):"
+           style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
+
+    <TextField fx:id="arrayInput"
+               promptText="Пример: 5,2,8,1,9,3,7,4,6 или 15 12 8 20 3 17 9 14 6 11"
+               style="-fx-font-size: 14px; -fx-padding: 8;"/>
+
+    <Button fx:id="startButton" onAction="#startSorting"
+            style="-fx-font-size: 16px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 12; -fx-background-radius: 8;"
+            text="Начать сравнение алгоритмов" />
+
+    <Label fx:id="statusLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;"
+           text="Введите массив и нажмите кнопку" />
+
+    <HBox fx:id="chartArea" spacing="20" style="-fx-padding: 10;" />
+
+</VBox>
