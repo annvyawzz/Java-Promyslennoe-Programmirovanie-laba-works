@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.psyche.xml.LibraryController" spacing="10">
+
+    <!-- Исправленный padding -->
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colTitle" text="Название" minWidth="150"/>
+            <TableColumn fx:id="colAuthor" text="Автор" minWidth="120"/>
+            <TableColumn fx:id="colYear" text="Год" minWidth="80"/>
+            <TableColumn fx:id="colPrice" text="Цена" minWidth="80"/>
+            <TableColumn fx:id="colCategory" text="Категория" minWidth="120"/>
+            <TableColumn fx:id="colCopies" text="Всего" minWidth="60"/>
+            <TableColumn fx:id="colAvailable" text="Доступно" minWidth="80"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Label text="Поиск:"/>
+        <TextField fx:id="tfSearch" promptText="Введите запрос" HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="searchTypeCombo" promptText="Выберите тип"/>
+        <Button text="Найти" onAction="#searchBooks"/>
+        <Button text="Показать все" onAction="#showAllBooks"/>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Добавить новую книгу:" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Название:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="tfTitle" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Автор:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="tfAuthor" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Год:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="tfYear" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Цена:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="tfPrice" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="Категория:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <TextField fx:id="tfCategory" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+        <Label text="Количество:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <TextField fx:id="tfCopies" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+        <Button text="Добавить" onAction="#addBook" GridPane.rowIndex="3" GridPane.columnIndex="2"
+                GridPane.columnSpan="2" style="-fx-font-weight: bold;"/>
+    </GridPane>
+
+    <Separator/>
+
+    <HBox spacing="10">
+        <Label text="Действия с выбранной книгой:" style="-fx-font-weight: bold;"/>
+        <Button text="Изменить цену" onAction="#updatePrice"/>
+        <Button text="Выдать книгу" onAction="#borrowBook"/>
+        <Button text="Вернуть книгу" onAction="#returnBook"/>
+    </HBox>
+</VBox>
