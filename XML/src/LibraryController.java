@@ -28,11 +28,9 @@ public class LibraryController {
         try {
             System.out.println("Инициализация контроллера...");
 
-            // Настройка поиска
             searchTypeCombo.getItems().addAll("Автор", "Год", "Категория", "Название");
             searchTypeCombo.setValue("Автор");
 
-            // Загрузка данных
             loadData();
 
             System.out.println("Контроллер успешно инициализирован");
@@ -48,7 +46,6 @@ public class LibraryController {
         bookList = FXCollections.observableArrayList(XMLHelper.loadBooks());
         System.out.println("Загружено книг: " + bookList.size());
 
-        // Настройка таблицы
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -239,6 +236,193 @@ public class LibraryController {
             }
         } else {
             showAlert("Ошибка", "Выберите книгу из таблицы");
+        }
+    }
+
+    // ========== НОВЫЕ XPATH МЕТОДЫ ==========
+
+    @FXML
+    private void updatePriceXPath() {
+        Book selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            TextInputDialog dialog = new TextInputDialog(String.valueOf(selected.getPrice()));
+            dialog.setTitle("Изменение цены (XPATH)");
+            dialog.setHeaderText("Книга: " + selected.getTitle());
+            dialog.setContentText("Введите новую цену:");
+
+            dialog.showAndWait().ifPresent(newPrice -> {
+                try {
+                    double price = Double.parseDouble(newPrice);
+                    if (price <= 0) {
+                        showAlert("Ошибка", "Цена должна быть положительным числом");
+                        return;
+                    }
+
+                    // Используем XPATH вместо обновления списка
+                    XMLHelper.updateBookPrice(selected.getId(), price);
+
+                    // Обновляем отображение
+                    selected.setPrice(price);
+                    tableView.refresh();
+                    showAlert("Успех", "Цена обновлена через XPATH!");
+
+                } catch (NumberFormatException e) {
+                    showAlert("Ошибка", "Введите корректное число для цены");
+                } catch (Exception e) {
+                    showAlert("Ошибка", "Не удалось обновить цену: " + e.getMessage());
+                }
+            });
+        } else {
+            showAlert("Ошибка", "Выберите книгу из таблицы");
+        }
+    }
+
+    @FXML
+    private void borrowBookXPath() {
+        Book selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            if (selected.getAvailable() > 0) {
+                int newAvailable = selected.getAvailable() - 1;
+
+                try {
+                    // Используем XPATH
+                    XMLHelper.updateAvailableCount(selected.getId(), newAvailable);
+
+                    // Обновляем отображение
+                    selected.setAvailable(newAvailable);
+                    tableView.refresh();
+
+                    showAlert("Успех", "Книга выдана (XPATH)!\nОсталось: " + newAvailable);
+
+                } catch (Exception e) {
+                    showAlert("Ошибка", "Не удалось сохранить: " + e.getMessage());
+                }
+            } else {
+                showAlert("Ошибка", "Нет доступных экземпляров");
+            }
+        } else {
+            showAlert("Ошибка", "Выберите книгу из таблицы");
+        }
+    }
+
+    @FXML
+    private void returnBookXPath() {
+        Book selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            if (selected.getAvailable() < selected.getCopies()) {
+                int newAvailable = selected.getAvailable() + 1;
+
+                try {
+                    // Используем XPATH
+                    XMLHelper.updateAvailableCount(selected.getId(), newAvailable);
+
+                    // Обновляем отображение
+                    selected.setAvailable(newAvailable);
+                    tableView.refresh();
+
+                    showAlert("Успех", "Книга возвращена (XPATH)!\nТеперь доступно: " + newAvailable);
+
+                } catch (Exception e) {
+                    showAlert("Ошибка", "Не удалось сохранить: " + e.getMessage());
+                }
+            } else {
+                showAlert("Ошибка", "Все экземпляры уже в библиотеке");
+            }
+        } else {
+            showAlert("Ошибка", "Выберите книгу из таблицы");
+        }
+    }
+
+    @FXML
+    private void searchByAuthorXPath() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Поиск по автору (XPATH)");
+        dialog.setHeaderText("Введите имя автора:");
+        dialog.setContentText("Автор:");
+
+        dialog.showAndWait().ifPresent(author -> {
+            try {
+                // Используем XPATH поиск
+                List<Book> found = XMLHelper.findBooksByAuthor(author);
+                tableView.setItems(FXCollections.observableArrayList(found));
+
+                if (found.isEmpty()) {
+                    showAlert("Результат", "Автор '" + author + "' не найден");
+                } else {
+                    showAlert("Результат", "Найдено книг: " + found.size());
+                }
+            } catch (Exception e) {
+                showAlert("Ошибка", "Ошибка поиска: " + e.getMessage());
+            }
+        });
+    }
+
+    @FXML
+    private void searchByYearXPath() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Поиск по году (XPATH)");
+        dialog.setHeaderText("Введите год издания:");
+        dialog.setContentText("Год:");
+
+        dialog.showAndWait().ifPresent(yearStr -> {
+            try {
+                int year = Integer.parseInt(yearStr);
+                // Используем XPATH поиск
+                List<Book> found = XMLHelper.findBooksByYear(year);
+                tableView.setItems(FXCollections.observableArrayList(found));
+
+                if (found.isEmpty()) {
+                    showAlert("Результат", "Книги " + year + " года не найдены");
+                } else {
+                    showAlert("Результат", "Найдено книг: " + found.size());
+                }
+            } catch (NumberFormatException e) {
+                showAlert("Ошибка", "Введите корректный год (число)");
+            } catch (Exception e) {
+                showAlert("Ошибка", "Ошибка поиска: " + e.getMessage());
+            }
+        });
+    }
+
+    @FXML
+    private void deleteBookXPath() {
+        Book selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Удаление книги");
+            confirm.setHeaderText("Удалить книгу: " + selected.getTitle() + "?");
+            confirm.setContentText("Это действие нельзя отменить.");
+
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        // Используем XPATH удаление
+                        XMLHelper.deleteBook(selected.getId());
+
+                        bookList.remove(selected);
+                        tableView.refresh();
+
+                        showAlert("Успех", "Книга удалена через XPATH!");
+                    } catch (Exception e) {
+                        showAlert("Ошибка", "Не удалось удалить книгу: " + e.getMessage());
+                    }
+                }
+            });
+        } else {
+            showAlert("Ошибка", "Выберите книгу из таблицы");
+        }
+    }
+
+    @FXML
+    private void reloadFromXML() {
+        try {
+            // Загружаем заново из XML
+            List<Book> books = XMLHelper.getAllBooks();
+            bookList.setAll(books);
+            tableView.refresh();
+            showAlert("Успех", "Данные загружены из XML!\nКниг: " + books.size());
+        } catch (Exception e) {
+            showAlert("Ошибка", "Не удалось загрузить данные: " + e.getMessage());
         }
     }
 
