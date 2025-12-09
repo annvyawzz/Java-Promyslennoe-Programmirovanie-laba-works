@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="library.xsd">
+    <book id="1" copies="5" available="5">
+        <title>Java Programming</title>
+        <author>James Gosling</author>
+        <year>2021</year>
+        <price>45.99</price>
+        <category>Programming</category>
+    </book>
+    <book id="2" copies="3" available="2">
+        <title>Spring in Action</title>
+        <author>Craig Walls</author>
+        <year>2022</year>
+        <price>55.50</price>
+        <category>Programming</category>
+    </book>
+    <book id="3" copies="7" available="7">
+        <title>Clean Code</title>
+        <author>Robert Martin</author>
+        <year>2008</year>
+        <price>35.00</price>
+        <category>Software Development</category>
+    </book>
+    <book id="4" copies="4" available="1">
+        <title>Effective Java</title>
+        <author>Joshua Bloch</author>
+        <year>2018</year>
+        <price>49.99</price>
+        <category>Programming</category>
+    </book>
+</library>
